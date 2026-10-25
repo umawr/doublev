@@ -18,7 +18,6 @@ void image_generator(int red_count, int green_count, int blue_count)
     int lumin = (red_count * weight_red + green_count * weight_green + blue_count * weight_blue) / 4;
     for (int i = 0; i < tone; i++)
     { 
-        // fix division my 0!!!
         int upper_limit = (i == tone -1) ? 255 : (i + 1) * 255 / tone;
         int lower_limit = i * 255 / tone;
         int match = (i == tone -1) ? (lumin >= lower_limit && lumin <= upper_limit) : (lumin >= lower_limit && lumin < upper_limit);
