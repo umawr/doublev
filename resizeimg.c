@@ -16,19 +16,21 @@ void image_generator(int red_count, int green_count, int blue_count)
 {
     float weight_red = 0.299, weight_green = 0.587, weight_blue = 0.114;
     int lumin = (red_count * weight_red + green_count * weight_green + blue_count * weight_blue) / 4;
-
-    // chech for boundary conditions
     for (int i = 0; i < tone; i++)
     { 
-        if (lumin >= i * 255 / tone && lumin < (i + 1) * 255 / tone )
+        // fix division my 0!!!
+        int upper_limit = (i == tone -1) ? 255 : (i + 1) * 255 / tone;
+        int lower_limit = i * 255 / tone;
+        int match = (i == tone -1) ? (lumin >= lower_limit && lumin <= upper_limit) : (lumin >= lower_limit && lumin < upper_limit);
+        if (match)
         {
-            int scaled_value =  i * 255/(tone - 1);
+            int scaled_value =  i * 255 / (tone - 1);
             resize_img[pixel_index + 0] = scaled_value;
             resize_img[pixel_index + 1] = scaled_value;
             resize_img[pixel_index + 2] = scaled_value;
+            break;
         }
     }
-
     pixel_index = pixel_index + 3;
 }
 
@@ -60,18 +62,15 @@ int main(void)
     resize_img = malloc(resize_img_size);
     printf("Enter output tone (through 1 - 10)\n");
     scanf("%d", &tone);
-
     if (data == NULL)
     {
         printf("Error in loading image\n");
         exit(EXIT_FAILURE);
     }
-
     printf("Loaded image of width %d pixels, height %d pixels & %d channels\n", width, height, channels);
-
     for (int y = 0; y < height - 1; y = y + 2)
     {
-        for (int x = 0; x < width - 1; x = x + 2)// x + 6 to x + 2
+        for (int x = 0; x < width - 1; x = x + 2)
         {   
             unsigned char * top_left = &data[(width * y + x) * channels];
             unsigned char * top_right = &data[(width * y + (x + 1)) * channels];
@@ -81,14 +80,26 @@ int main(void)
             color_parser(top_left, top_right, bottom_left, bottom_right);
         }
     }
-
-    stbi_write_png("sample_out/me_test6.png", new_width, new_height, channels, resize_img, new_width * channels);
+    stbi_write_png("sample_out/me_test8.png", new_width, new_height, channels, resize_img, new_width * channels);
     stbi_image_free(data);
     free(resize_img);
     return 0;
 }
 
-// 4th iteration, image generator, 1st iterataion
+// 4th iteration, image generator, 2st iterataion (does not work well for boundary conditions)
+
+    // for (int i = 0; i < tone; i++)
+    // { 
+    //     if (lumin >= i * 255 / tone && lumin < (i + 1) * 255 / tone )
+    //     {
+    //         int scaled_value =  i * 255/(tone - 1);
+    //         resize_img[pixel_index + 0] = scaled_value;
+    //         resize_img[pixel_index + 1] = scaled_value;
+    //         resize_img[pixel_index + 2] = scaled_value;
+    //     }
+    // }
+
+// 4th iteration, image generator, 1st iterataion (hard coded values XX!)
 
     // if (tone == 2 ) // binarization (dual tone)
     // {         
