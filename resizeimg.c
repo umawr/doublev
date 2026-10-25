@@ -55,19 +55,24 @@ void color_parser(unsigned char * top_left_pixel, unsigned char * top_rigth_pixe
 int main(void)
 {
     int width, height, channels;
-    unsigned char *data = stbi_load("sample_in/me.jpg", &width, &height, &channels, 0);
+    unsigned char *data = stbi_load("sample_in/apple.jpg", &width, &height, &channels, 0);
     int new_width = width / 2;
     int new_height = height / 2;
     size_t resize_img_size = new_width * new_height * channels;
     resize_img = malloc(resize_img_size);
-    printf("Enter output tone (through 1 - 10)\n");
-    scanf("%d", &tone);
+    printf("Loaded image of width %d pixels, height %d pixels & %d channels\n", width, height, channels);
+    do 
+    {
+        printf("Enter output tone (through 2 - 255)\n");
+        scanf("%d", &tone);
+        if(tone == 1)
+            printf("Enter a valid choice\n");
+    } while (tone == 1 || tone <= 0 );
     if (data == NULL)
     {
         printf("Error in loading image\n");
         exit(EXIT_FAILURE);
     }
-    printf("Loaded image of width %d pixels, height %d pixels & %d channels\n", width, height, channels);
     for (int y = 0; y < height - 1; y = y + 2)
     {
         for (int x = 0; x < width - 1; x = x + 2)
@@ -80,7 +85,7 @@ int main(void)
             color_parser(top_left, top_right, bottom_left, bottom_right);
         }
     }
-    stbi_write_png("sample_out/me_test8.png", new_width, new_height, channels, resize_img, new_width * channels);
+    stbi_write_png("sample_out/apple_tone.png", new_width, new_height, channels, resize_img, new_width * channels);
     stbi_image_free(data);
     free(resize_img);
     return 0;
@@ -99,7 +104,7 @@ int main(void)
     //     }
     // }
 
-// 4th iteration, image generator, 1st iterataion (hard coded values XX!)
+// 4th iteration, image generator, 1st iterataion
 
     // if (tone == 2 ) // binarization (dual tone)
     // {         
