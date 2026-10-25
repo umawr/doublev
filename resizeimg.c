@@ -17,13 +17,15 @@ void image_generator(int red_count, int green_count, int blue_count)
     float weight_red = 0.299, weight_green = 0.587, weight_blue = 0.114;
     int lumin = (red_count * weight_red + green_count * weight_green + blue_count * weight_blue) / 4;
 
+    // chech for boundary conditions
     for (int i = 0; i < tone; i++)
-    {
+    { 
         if (lumin >= i * 255 / tone && lumin < (i + 1) * 255 / tone )
         {
-            resize_img[pixel_index + 0] = i * 255/(tone - 1);
-            resize_img[pixel_index + 1] = i * 255/(tone - 1);
-            resize_img[pixel_index + 2] = i * 255/(tone - 1);
+            int scaled_value =  i * 255/(tone - 1);
+            resize_img[pixel_index + 0] = scaled_value;
+            resize_img[pixel_index + 1] = scaled_value;
+            resize_img[pixel_index + 2] = scaled_value;
         }
     }
 
@@ -80,7 +82,7 @@ int main(void)
         }
     }
 
-    stbi_write_png("sample_out/me_test5.png", new_width, new_height, channels, resize_img, new_width * channels);
+    stbi_write_png("sample_out/me_test6.png", new_width, new_height, channels, resize_img, new_width * channels);
     stbi_image_free(data);
     free(resize_img);
     return 0;
