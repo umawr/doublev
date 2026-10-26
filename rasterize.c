@@ -6,9 +6,6 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb/stb_image_write.h"
 
-// all under 47 semi-colons ; )
-// optimizing code, shortening varibale names ;|
-
 unsigned char * resize_img = NULL;
 unsigned char * rasterize_img = NULL;
 int pixel_index = 0;
