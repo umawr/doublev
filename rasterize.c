@@ -20,7 +20,7 @@ void image_rasterize()
     if (scaled_value == 0)
         printf("#");
     else
-        printf("l");
+        printf(",");
 }
 
 void image_generator(int red_count, int green_count, int blue_count)
@@ -29,12 +29,11 @@ void image_generator(int red_count, int green_count, int blue_count)
     int lumin = (red_count * weight_red + green_count * weight_green + blue_count * weight_blue) / 4;
     for (int i = 0; i < tone; i++)
     { 
-        int upper_limit = (i == tone -1) ? 255 : (i + 1) * 255 / tone;
+        int upper_limit = (i == tone - 1) ? 255 : (i + 1) * 255 / tone;
         int lower_limit = i * 255 / tone;
-        int match = (i == tone -1) ? (lumin >= lower_limit && lumin <= upper_limit) : (lumin >= lower_limit && lumin < upper_limit);
+        int match = (i == tone - 1) ? (lumin >= lower_limit && lumin <= upper_limit) : (lumin >= lower_limit && lumin < upper_limit);
         if (match)
         {
-            // int scaled_value =  i * 255 / (tone - 1);
             scaled_value =  i * 255 / (tone - 1);
             resize_img[pixel_index + 0] = scaled_value;
             resize_img[pixel_index + 1] = scaled_value;
@@ -51,8 +50,6 @@ void color_parser(unsigned char * top_left_pixel, unsigned char * top_rigth_pixe
 {
     unsigned char red, green, blue;
     int red_count = 0, green_count = 0, blue_count = 0; 
-    // unsigned char *pixe
-
     unsigned char *pixel_group[] = {top_left_pixel, top_rigth_pixel, bottom_left_pixel, bottom_right_pixel}; 
     for (int i = 0; i <= 3; i++)
     {
