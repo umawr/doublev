@@ -6,6 +6,7 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb/stb_image_write.h"
 
+// all under 47 semi-colons ; )
 // optimizing code, shortening varibale names ;|
 
 unsigned char * resize_img = NULL;
@@ -59,7 +60,6 @@ int main(void)
     int new_height = height / 2;
     size_t resize_img_size = new_width * new_height * channels;
     resize_img = malloc(resize_img_size);
-    printf("Loaded image of width %d pixels, height %d pixels & %d channels\n", width, height, channels);
     do 
     {
         printf("Enter output tone (through 2 - 255)\n");
@@ -69,9 +69,11 @@ int main(void)
     } while (tone == 1 || tone <= 0 );
     if (data == NULL)
     {
-        printf("Error in loading image\n");
-        exit(EXIT_FAILURE);
+        printf("Failed to load image: %s\n", stbi_failure_reason());
+        return 1;
     }
+
+    printf("Loaded successfully: %d x %d, %d channels\n",width, height, channels);
     for (int y = 0; y < height - 1; y = y + 2)
     {
         for (int x = 0; x < width - 1; x = x + 2)
@@ -84,7 +86,7 @@ int main(void)
             color_parser(top_left, top_right, bottom_left, bottom_right);
         }
     }
-    stbi_write_png("sample_out/apple_tone.png", new_width, new_height, channels, resize_img, new_width * channels);
+    stbi_write_png("sample_out/apple_tone4.png", new_width, new_height, channels, resize_img, new_width * channels);
     stbi_image_free(data);
     free(resize_img);
     return 0;
