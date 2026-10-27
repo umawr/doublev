@@ -55,7 +55,7 @@ void color_parser(unsigned char * top_left_pixel, unsigned char * top_rigth_pixe
 int main(void)
 {
     int width, height, channels;
-    unsigned char *data = stbi_load("sample_in/apple.jpg", &width, &height, &channels, 0);
+    unsigned char *data = stbi_load("sample_in/girlwithpearl.jpg", &width, &height, &channels, 0);
     int new_width = width / 2;
     int new_height = height / 2;
     size_t resize_img_size = new_width * new_height * channels;
@@ -86,7 +86,7 @@ int main(void)
             color_parser(top_left, top_right, bottom_left, bottom_right);
         }
     }
-    stbi_write_png("sample_out/waveoff_test2.png", new_width, new_height, channels, resize_img, new_width * channels);
+    stbi_write_png("sample_out/girlwithpearl_tone8.png", new_width, new_height, channels, resize_img, new_width * channels);
     stbi_image_free(data);
     free(resize_img);
     return 0;
