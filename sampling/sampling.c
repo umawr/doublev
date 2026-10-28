@@ -7,7 +7,7 @@
 #include "stb/stb_image_write.h"
 
 int new_width;
-unsigned char * resize_img = NULL;
+// unsigned char * resize_img = NULL;
 unsigned char * rasterize_img = NULL;
 FILE * file_pointer = NULL;
 int tone;
@@ -39,21 +39,21 @@ void image_generator(int red_count, int green_count, int blue_count)
 {
     float weight_red = 0.299, weight_green = 0.587, weight_blue = 0.114;
     float lumin = (red_count * weight_red + green_count * weight_green + blue_count * weight_blue) / 4;
-    for (int i = 0; i < tone; i++)
-    {
-        int upper_limit = (i == tone - 1) ? 255 : (i + 1) * 255 / tone;
-        int lower_limit = i * 255 / tone;
-        int match = (i == tone - 1) ? (lumin >= lower_limit && lumin <= upper_limit) : (lumin >= lower_limit && lumin < upper_limit);
-        if (match)
-        {
-            scaled_value =  i * 255 / (tone - 1);
-            resize_img[pixel_index + 0] = scaled_value;
-            resize_img[pixel_index + 1] = scaled_value;
-            resize_img[pixel_index + 2] = scaled_value;
-            break;
-        }
-    }
-    pixel_index = pixel_index + 3;
+    // for (int i = 0; i < tone; i++)
+    // {
+    //     int upper_limit = (i == tone - 1) ? 255 : (i + 1) * 255 / tone;
+    //     int lower_limit = i * 255 / tone;
+    //     int match = (i == tone - 1) ? (lumin >= lower_limit && lumin <= upper_limit) : (lumin >= lower_limit && lumin < upper_limit);
+    //     if (match)
+    //     {
+    //         scaled_value =  i * 255 / (tone - 1);
+    //         resize_img[pixel_index + 0] = scaled_value;
+    //         resize_img[pixel_index + 1] = scaled_value;
+    //         resize_img[pixel_index + 2] = scaled_value;
+    //         break;
+    //     }
+    // }
+    // pixel_index = pixel_index + 3;
     image_rasterize(lumin);
 }
 
@@ -78,12 +78,12 @@ void color_parser(unsigned char * top_left_pixel, unsigned char * top_rigth_pixe
 int main(void)
 {
     int width, height, channels;
-    unsigned char *data = stbi_load("sample_in/me200x113.jpg", &width, &height, &channels, 0);
+    unsigned char *data = stbi_load("sample_in/apple100x.jpg", &width, &height, &channels, 0);
     new_width = width / 2;
     int new_height = height / 2;
     size_t resize_img_size = new_width * new_height * channels;
-    resize_img = malloc(resize_img_size);
-    rasterize_img = malloc(resize_img_size);
+    // resize_img = malloc(resize_img_size);
+    // rasterize_img = malloc(resize_img_size);
     printf("Loaded image of width %d pixels, height %d pixels & %d channels\n", width, height, channels);
     do
     {
@@ -110,12 +110,13 @@ int main(void)
             line_counter += 1;
         }
     }
-    stbi_write_png("sample_out/apple_rasterized.png", new_width, new_height, channels, resize_img, new_width * channels);
+    // stbi_write_png("sample_out/apple_rasterized.png", new_width, new_height, channels, resize_img, new_width * channels);
     stbi_image_free(data);
-    free(resize_img);
+    // free(resize_img);
     return 0;
 }
 
+// 1st iteration, fewer details
 
 // if (scaled_value == 0)
 // {
@@ -127,6 +128,8 @@ int main(void)
 //     fprintf(file_pointer, "%c", ramp[5]);
 //     printf("%c", ramp[5]);
 // }
+
+// 2nd iteration, too much data in the code
 
 // if (lumin >= 0 && lumin <= 36.428) // 36.428 is (i + 1) * 255/(sizeof(ramp)/sizeof(char))
 // {
