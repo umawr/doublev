@@ -14,7 +14,7 @@ int tone;
 int scaled_value;
 int pixel_index = 0;
 int line_counter = 0;
-char ramp[] = {'@', 'W', '#', 'm', '=', '+', '.'};
+char ramp[] = {'@', 'W', '#', 'm', '=', '+', ';'};
 int ramp_size = (sizeof(ramp)/sizeof(char));
 void image_rasterize(float lumin)
 {
@@ -29,13 +29,13 @@ void image_rasterize(float lumin)
         if (lumin >= (i + 0) * 255/ramp_size && lumin <= (i + 1) * 255/ramp_size)
         {
             fprintf(file_pointer, "%c", ramp[i]);
-            printf("%c", ramp[i]);
+            // printf("%c", ramp[i]);
         }
     }
     fclose(file_pointer);
 }
 
-void image_generator(int red_count, int green_count, int blue_count)
+void lumin_calc(int red_count, int green_count, int blue_count)
 {
     float weight_red = 0.299, weight_green = 0.587, weight_blue = 0.114;
     float lumin = (red_count * weight_red + green_count * weight_green + blue_count * weight_blue) / 4;
@@ -72,7 +72,7 @@ void color_parser(unsigned char * top_left_pixel, unsigned char * top_rigth_pixe
         blue = pixel_group[i][2];
         blue_count += blue;
     }
-    image_generator(red_count, green_count, blue_count);
+    lumin_calc(red_count, green_count, blue_count);
 }
 
 int main(void)
