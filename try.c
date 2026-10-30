@@ -1,14 +1,15 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-// #define STB_IMAGE_IMPLEMENTATION
-// #include "stb_library/stb_image.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_library/stb_image.h"
 
-// #define STB_IMAGE_WRITE_IMPLEMENTATION
-// #include "stb_library/stb_image_write.h"
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_library/stb_image_write.h"
 
-// #define STB_TRUETYPE_IMPLEMENTATION
-// #include "stb_library/stb_truetype.h"
+#define STB_TRUETYPE_IMPLEMENTATION
+#include "stb_library/stb_truetype.h"
+
 int main()
 {
     FILE *read_char = fopen("sample_out/try.txt", "r");// open try.txt
@@ -41,6 +42,15 @@ int main()
     long font_size = ftell(font_file);// save it to font_size
     fseek(font_file , 0, SEEK_SET);// point to index 0 of arialfont.ttf
     printf("\n%ld", font_size);// print the size of arialfont.ttf
+
+    unsigned char * font_data = malloc(font_size);// allocate memmory for the font file
+    fread(font_data, 1, font_size, font_file);// pointer, size of individual element, total number of element(size of .ttf in bytes), source
+    fclose(font_file);// close font_file
+
+    stbtt_fontinfo font_file;// font_file holds the data (math) on how to font is printed
+    stbtt_InitFont(&font, font_data, 0);// parses through font_data and finds how (math) to write char(s)
+    flaot scale = stbtt_ScaleForPixelHeight(&font, 32);
     
+    free(font_data);
     free(sampling_canvas_array);
 }
